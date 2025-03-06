@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>UTM-Parameter Creator - Naming-Convention based</title>
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background: linear-gradient(120deg, #1B2845, #4682b4);
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 2rem;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      color: #f5576c;
+    }
+    .error {
+      color: red;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    .result-box {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .footer-text {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .optional-label {
+      font-size: 0.85rem;
+      color: #777;
+      margin-left: 0.25rem;
+    }
+    /* Simple styling for our info icon */
+    .info-icon {
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 6px;
+      color: #0d6efd;    /* Bootstrap primary color */
+      border: 1px solid #0d6efd;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      line-height: 18px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    /* Control the tooltip width when hovering over the "i" icon.*/
+    .tooltip-inner {
+      max-width: 600px !important;
+      text-align: left !important;  /* explicitly force left alignment */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">UTM-Parameter Creator</h1>
+    <h3 class="title">Naming-Convention based</h3>
+
+    <!-- HIDDEN HTML TEXT CONTAINERS (placeholders for each label) -->
+    <div id="info-channel" style="display:none;">
+      <p>Select the channel the campaign parameters should be created. <br /><br />
+      Choose from the following Options:</p>
+      <ul>
+        <li><strong>Search (Brand)</strong><br />Campaign is for the Google, Bing, etc. search network with brand keywords (like xxxlutz, moemax, moebelix, etc.) used</li><br />
+        <li><strong>Search (Generic)</strong><br />Campaign is for the Google, Bing, etc. search network without brand keywords (like xxxlutz, moemax, moebelix, etc.) used</li><br />
+        <li><strong>Search (Shopping)</strong><br />Campaign is for the Google, Bing, etc. shopping network</li><br />
+        <li><strong>Display</strong><br />Campaign uses banner, videos or retargeting but not in social networks</li><br />
+        <li><strong>Social Advertising</strong><br />Campaign is paid and displayed in social networks</li><br />
+        <li><strong>Social & Influencer</strong><br />Campaign is for social networks but the social network is not paid it like organic posts or influencer marketing.</li><br />
+        <li><strong>Affiliate</strong><br />Campaign is for an affiliate network</li><br />
+        <li><strong>PSM</strong><br />Campaign is for price search engines like idealo</li><br />
+        <li><strong>Email</strong><br />Campaign is for email like newsletter</li><br />
+        <li><strong>Cooperations</strong><br />Campaign is for a cooperation that does not fit into the other categories</li><br />
+        <li><strong>Offsite</strong><br />Campaign is for other purposes like qr_codes or satelite pages</li>
+      </ul>
+    </div>
+    <div id="info-utm_source" style="display:none;">
+      <p>Select a channel first</p>
+    </div>
+    <div id="info-utm_medium" style="display:none;">
+      <p>Select a channel first</p>
+    </div>
+    <div id="info-start_date" style="display:none;">
+      <p>Type in a “Start Date” of the campaign if you want to track that for later reports.</p>
+      <p>Use YYYY-MM-DD Format</p>
+      <p>Start Date is optional but good for attribution reports as we have a lookback window of 90 days so you know if attribution for a specific campaign is completed or if you need to wait a bit longer to fully see the campaign result</p>
+    </div>
+    <div id="info-end_date" style="display:none;">
+      <p>Type in a End Date” of the campaign if you want to track that for later reports.</p>
+      <p>Use YYYY-MM-DD Format</p>
+      <p>End Date is optional but good for attribution reports as we have a lookback window of 90 days so you know if attribution for a specific campaign is completed or if you need to wait a bit longer to fully see the campaign result</p>
+    </div>
+    <div id="info-campaign_content_prefix" style="display:none;">
+      <p>Choose from the following Options:</p>
+      <ul>
+        <li><strong>so-</strong><br />Special Offer [Aktion/Promotion]</li><br />
+        <li><strong>s-</strong><br />Selection [Sortiment]</li><br />
+        <li><strong>ob-</strong><br />own Brand</li><br />
+        <li><strong>fb-</strong><br />foreign Brand</li><br />
+        <li><strong>st-</strong><br />Store</li><br />
+        <li><strong>wkz-</strong><br />Werbekostenzuschlag [advertising surcharge]</li><br />
+        <li><strong>d-</strong><br />Dach-Kampagne</li><br />
+        <li><strong>i-</strong><br />Inspirational</li><br />
+        <li><strong>id-</strong><br />individual campaign content</li><br />
+        <li><strong>n-</strong><br />if no campaign content suits or is available</li><br />
+      </ul>
+    </div>
+    <div id="info-campaign_content_main" style="display:none;">
+      <p>You can use flags that you use on the same campaign for different channels so they can be easier found and combined in reports later on.</p>
+      <p>like "bsw" for Black Shopping Week campaigns</p>
+      <p>Use the same flag like "bsw" in all campaigns in different channels</p>
+      <p>Only use lower case letters and dashes</p>
+    </div>
+    <div id="info-campaign_content_extra" style="display:none;">
+      <p>Add more information you want to track or your agency needs.</p>
+      <p>Only use lower case letters and dashes</p>
+    </div>
+    <div id="info-goal" style="display:none;">
+      <p>Choose from the following Options:</p>
+      <ul>
+        <li><strong>sl</strong><br />Sale (sl)</li><br />
+        <li><strong>sv</strong><br />Storevisit (sv)</li><br />
+        <li><strong>ldg</strong><br />Leadgeneration (ldg)</li><br />
+        <li><strong>aw</strong><br />Awarness (aw)</li><br />
+        <li><strong>tr</strong><br />Traffic (tr)</li><br />
+        <li><strong>sl-sv</strong><br />Combination of: Sale & Storevisit (sl-sv)</li><br />
+        <li><strong>sl-ldg</strong><br />Combination of: Sale & Leadgeneration (sl-ldg)</li><br />
+        <li><strong>sl-aw</strong><br />Combination of: Sale & Awarness (sl-aw)</li><br />
+        <li><strong>sl-tr</strong><br />Combination of: Sale & Traffic (sl-tr)</li><br />
+        <li><strong>sv-ldg</strong><br />Combination of: Storevisit & Leadgeneration (sv-ldg)</li><br />
+        <li><strong>sv-aw</strong><br />Combination of: Storevisit & Awarness (sv-aw)</li><br />
+        <li><strong>sv-tr</strong><br />Combination of: Storevisit & Traffic (sv-tr)</li><br />
+        <li><strong>ldg-aw</strong><br />Combination of: Leadgeneration & Awarness (ldg-aw)</li><br />
+        <li><strong>ldg-tr</strong><br />Combination of: Leadgeneration & Traffic (ldg-tr)</li><br />
+        <li><strong>aw-tr</strong><br />Combination of: Awarness & Traffic (aw-tr)</li><br />
+        <li><strong>n</strong><br />Not defined (n): If nothing fits</li><br />
+      </ul>
+    </div>
+    <div id="info-campaign_type" style="display:none;">
+      <p>Select a channel first</p>
+    </div>
+    <div id="info-campaign_subtype" style="display:none;">
+      <p>Select a goal for your campaign.<br /><br />
+      Choose from the following Options:</p>
+      <ul>
+        <li><strong>spc</strong> = Special Campaign<br />The Campaign is time limited and serves a specific purpose like Black Shopping Week.</li><br />
+        <li><strong>ao</strong> = Always on<br />The Campaign is not time limited (e.g., a Boxspringbett Campaign running indefinitely).</li><br />
+        <li><strong>n</strong> = Not defined<br />Currently the campaign does not fit in “Special Campaign” or “Always on”.</li>
+      </ul>
+    </div>
+    <div id="info-budget_type" style="display:none;">
+      <p>Choose from the following Options:</p>
+      <ul>
+        <li><strong>on</strong><br />Online budget</li><br />
+        <li><strong>st</strong><br />Stationary budget</li><br />
+        <li><strong>m</strong><br />Mixed budget (online & stationary)</li><br />
+      </ul>
+    </div>
+    <div id="info-rail" style="display:none;">
+      <p>Choose from the following Options:</p>
+      <ul>
+        <li><strong>mbx</strong><br />Möbelix</li><br />
+        <li><strong>mmx</strong><br />Mömax</li><br />
+        <li><strong>ltz</strong><br />Lutz</li><br />
+        <li><strong>lsna</strong><br />Lesnina</li><br />
+        <li><strong>poco</strong><br />Poco</li><br />
+      </ul>
+    </div>
+    <div id="info-country" style="display:none;">
+      <p>Choose from the following Options:</p>
+      <ul>
+        <li><strong>de</strong><br />Germany</li><br />
+        <li><strong>at</strong><br />Austria</li><br />
+        <li><strong>ch</strong><br />Switzerland</li><br />
+        <li><strong>cz</strong><br />Czech Republic</li><br />
+        <li><strong>sk</strong><br />Slovakia</li><br />
+        <li><strong>hr</strong><br />Croatia</li><br />
+        <li><strong>si</strong><br />Slovenia</li><br />
+        <li><strong>hu</strong><br />Hungary</li><br />
+        <li><strong>ro</strong><br />Romania</li><br />
+        <li><strong>pl</strong><br />Poland</li><br />
+      </ul>
+    </div>
+    <div id="info-utm_content" style="display:none;">
+      <p>You can put in information for another report dimension.</p>
+      <p>You can for example put different baner sizes in there for a/b testing of banner sizes or layouts you use in the same campaign</p>
+      <p>Only use lower case letters and dashes</p>
+    </div>
+    <div id="info-utm_term" style="display:none;">
+      <p>You can put in information for another report dimension.</p>
+      <p>You can for example put the product_id in there for product_id based advertisement like shopping or product search engines</p>
+      <p>Only use lower case letters and dashes</p>
+    </div>
+
+    <!-- Hidden container for the "Target URL" tooltip -->
+    <div id="info-target_url" style="display:none;">
+      <p>This is your final landing page or target URL. Make sure it starts with
+      <strong>http://</strong> or <strong>https://</strong>, then <strong>www.</strong>, and ends with a valid top-level domain
+      (e.g., .com, .net, .org, .at, etc.).
+      </p>
+    </div>
+
+    <form id="utmForm" novalidate>
+      <!-- STEP 1: CHANNEL SELECTION -->
+      <h5 class="mt-4">Step 1: Channelgrouping (Select a Channel)</h5>
+      <div class="mb-3">
+        <label for="channel" class="form-label fw-bold">
+          Channel <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-channel"
+          >i</span>
+        </label>
+        <select class="form-select" id="channel" required>
+          <option value="">-- Select a Channel --</option>
+          <option value="Search (Brand)">Search (Brand)</option>
+          <option value="Search (Generic)">Search (Generic)</option>
+          <option value="Search (Shopping)">Search (Shopping)</option>
+          <option value="Display">Display</option>
+          <option value="Social Advertising">Social Advertising</option>
+          <option value="Affiliate">Affiliate</option>
+          <option value="PSM">PSM</option>
+          <option value="Email">Email</option>
+          <option value="Cooperations">Cooperations</option>
+          <option value="Social & Influencer">Social & Influencer</option>
+          <option value="Offsite">Offsite</option>
+        </select>
+        <div id="channelError" class="error"></div>
+      </div>
+
+      <!-- STEP 2: UTM SOURCE & UTM MEDIUM -->
+      <h5 class="mt-4">Step 2: UTM SOURCE & UTM MEDIUM</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="utm_source" class="form-label fw-bold">
+            utm_source <span class="text-danger">*</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-utm_source"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="utm_source"
+            placeholder="Enter a source (e.g. google)"
+            required
+          />
+          <div id="sourceError" class="error"></div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="utm_medium" class="form-label fw-bold">
+            utm_medium <span class="text-danger">*</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-utm_medium"
+            >i</span>
+          </label>
+          <select class="form-select" id="utm_medium" required>
+            <option value="">-- Select a Medium --</option>
+            <!-- Options populated dynamically in JS -->
+          </select>
+          <div id="mediumError" class="error"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: UTM CAMPAIGN -->
+      <div class="row gx-2">
+        <h5 class="mt-4">Step 3: UTM CAMPAIGN</h5>
+      </div>
+
+      <!-- Dates -->
+      <h5 class="mt-4">Dates</h5>
+      <div class="row gx-2">
+        <div class="col-md-6 mb-3">
+          <label for="start_date" class="form-label fw-bold">
+            Start Date
+            <span class="optional-label">(optional, format YYYY-MM-DD)</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-start_date"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="start_date"
+            placeholder="2025-01-31"
+          />
+          <div id="startDateError" class="error"></div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="end_date" class="form-label fw-bold">
+            End Date
+            <span class="optional-label">(optional, format YYYY-MM-DD)</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-end_date"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="end_date"
+            placeholder="2025-02-15"
+          />
+          <div id="endDateError" class="error"></div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="campaign_content_prefix" class="form-label fw-bold">
+            Campaign Content - Prefix
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-campaign_content_prefix"
+            >i</span>
+          </label>
+          <select class="form-select" id="campaign_content_prefix">
+            <option value="">-- Select campaign content prefix --</option>
+            <option value="so-">Special Offer (so-)</option>
+            <option value="s-">Selection (s-)</option>
+            <option value="ob-">Own brand (ob-)</option>
+            <option value="fb-">Foreign brand (fb-)</option>
+            <option value="st-">stationary (st-)</option>
+            <option value="wkz-">warenkostenzuschlag (wkz-)</option>
+            <option value="d-">DACH-campaign (d-)</option>
+            <option value="i-">Inspirational (i-)</option>
+            <option value="id-">individual tag (id-)</option>
+            <option value="n-">Not defined (n-)</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="campaign_content_main" class="form-label fw-bold">
+            Campaign Content - Flag <span class="text-danger">*</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-campaign_content_main"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="campaign_content_main"
+            placeholder="required content"
+            required
+          />
+          <div id="contentMainError" class="error"></div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="campaign_content_extra" class="form-label fw-bold">
+            Campaign Content - More
+            <span class="optional-label">(optional)</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-campaign_content_extra"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="campaign_content_extra"
+            placeholder="optional"
+          />
+          <div id="contentExtraError" class="error"></div>
+        </div>
+      </div>
+
+      <!-- Goal -->
+      <div class="mb-3">
+        <label for="goal" class="form-label fw-bold">
+          Goal <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-goal"
+          >i</span>
+        </label>
+        <select class="form-select" id="goal" required>
+          <option value="">-- Select a Goal --</option>
+          <option value="sl">Sale (sl)</option>
+          <option value="sv">Storevisit (sv)</option>
+          <option value="ldg">Leadgeneration (ldg)</option>
+          <option value="aw">Awarness (aw)</option>
+          <option value="tr">Traffic (tr)</option>
+          <!-- Two-value combos -->
+          <option value="sl-sv">Sale & Storevisit (sl-sv)</option>
+          <option value="sl-ldg">Sale & Leadgeneration (sl-ldg)</option>
+          <option value="sl-aw">Sale & Awarness (sl-aw)</option>
+          <option value="sl-tr">Sale & Traffic (sl-tr)</option>
+          <option value="sv-ldg">Storevisit & Leadgeneration (sv-ldg)</option>
+          <option value="sv-aw">Storevisit & Awarness (sv-aw)</option>
+          <option value="sv-tr">Storevisit & Traffic (sv-tr)</option>
+          <option value="ldg-aw">Leadgeneration & Awarness (ldg-aw)</option>
+          <option value="ldg-tr">Leadgeneration & Traffic (ldg-tr)</option>
+          <option value="aw-tr">Awarness & Traffic (aw-tr)</option>
+          <option value="n">Not defined (n)</option>
+        </select>
+        <div id="goalError" class="error"></div>
+      </div>
+
+      <!-- Campaign Type (Dropdown)-->
+      <div class="mb-3">
+        <label for="campaign_type" class="form-label fw-bold">
+          Campaign Type <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-campaign_type"
+          >i</span>
+        </label>
+        <select class="form-select" id="campaign_type" required>
+          <option value="">-- Select a Campaign Type --</option>
+          <!-- We'll populate the real options dynamically in JS -->
+        </select>
+        <div id="campaignTypeError" class="error"></div>
+      </div>
+
+      <!-- Campaign Subtype -->
+      <div class="mb-3">
+        <label for="campaign_subtype" class="form-label fw-bold">
+          Campaign Subtype <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-campaign_subtype"
+          >i</span>
+        </label>
+        <select class="form-select" id="campaign_subtype" required>
+          <option value="">-- Select Subtype --</option>
+          <option value="spc">Special Campaign (spc)</option>
+          <option value="ao">Always on (ao)</option>
+          <option value="n">Not defined (n)</option>
+        </select>
+        <div id="campaignSubtypeError" class="error"></div>
+      </div>
+
+      <!-- Budget Type -->
+      <div class="mb-3">
+        <label for="budget_type" class="form-label fw-bold">
+          Budget Type <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-budget_type"
+          >i</span>
+        </label>
+        <select class="form-select" id="budget_type" required>
+          <option value="">-- Select Budget Type --</option>
+          <option value="on">Online Budget (on)</option>
+          <option value="st">Stationary Budget (st)</option>
+          <option value="m">Mixed Budget (m)</option>
+        </select>
+        <div id="budgetTypeError" class="error"></div>
+      </div>
+
+      <!-- Rail -->
+      <div class="mb-3">
+        <label for="rail" class="form-label fw-bold">
+          rail <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-rail"
+          >i</span>
+        </label>
+        <select class="form-select" id="rail" required>
+          <option value="">-- Select rail --</option>
+          <option value="ltz">XXXLutz</option>
+          <option value="mmx">Mömax</option>
+          <option value="mbx">Möbelix</option>
+          <option value="lsna">Lesnina</option>
+          <option value="poco">Poco</option>
+        </select>
+        <div id="railError" class="error"></div>
+      </div>
+
+      <!-- Country -->
+      <div class="mb-3">
+        <label for="country" class="form-label fw-bold">
+          country <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-country"
+          >i</span>
+        </label>
+        <select class="form-select" id="country" required>
+          <option value="">-- Select country --</option>
+          <option value="de">Germany (de)</option>
+          <option value="at">Austria (at)</option>
+          <option value="ch">Switzerland (ch)</option>
+          <option value="cz">Czech Republic (cz)</option>
+          <option value="sk">Slovakia (sk)</option>
+          <option value="hr">Croatia (hr)</option>
+          <option value="si">Slovenia (si)</option>
+          <option value="hu">Hungary (hu)</option>
+          <option value="ro">Romania (ro)</option>
+          <option value="pl">Poland (pl)</option>
+        </select>
+        <div id="countryError" class="error"></div>
+      </div>
+
+      <!-- STEP 4: UTM CONTENT & UTM TERM (Optional) -->
+      <h5 class="mt-4">Step 4: UTM CONTENT & UTM TERM (Optional)</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="utm_content" class="form-label fw-bold">
+            utm_content
+            <span class="optional-label">(optional)</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-utm_content"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="utm_content"
+            placeholder="e.g. banner-v1"
+          />
+          <div id="contentError" class="error"></div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="utm_term" class="form-label fw-bold">
+            utm_term
+            <span class="optional-label">(optional)</span>
+            <span
+              class="info-icon"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title=""
+              id="tooltip-utm_term"
+            >i</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="utm_term"
+            placeholder="e.g. red-shoes"
+          />
+          <div id="termError" class="error"></div>
+        </div>
+      </div>
+
+      <!-- STEP 5: TARGET URL -->
+      <h5 class="mt-4">Step 5: Target URL</h5>
+      <div class="mb-3">
+        <label for="target_url" class="form-label fw-bold">
+          Target URL <span class="text-danger">*</span>
+          <span
+            class="info-icon"
+            data-bs-toggle="tooltip"
+            data-bs-html="true"
+            data-bs-title=""
+            id="tooltip-target_url"
+          >i</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="target_url"
+          placeholder="e.g. https://www.example.com"
+          required
+        />
+        <div id="targetUrlError" class="error"></div>
+      </div>
+
+      <!-- STEP 6: GENERATE UTM -->
+      <h5 class="mt-4">Step 6: GENERATE UTM</h5>
+      <button type="submit" class="btn btn-primary mt-3">Generate UTM</button>
+    </form>
+
+    <div id="result" class="result-box mt-4" style="display:none;"></div>
+    <button id="copyBtn" class="btn btn-secondary" style="display:none;">Copy Link</button>
+
+    <p class="footer-text">© 2025 Your Company - Marketing Department</p>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    /*******************************************************
+     * CHANNEL -> UTM_MEDIUM MAPPING
+     *******************************************************/
+    const channelMediumMap = {
+      "Search (Brand)": ["brand"],
+      "Search (Generic)": ["generic"],
+      "Search (Shopping)": ["shopping"],
+      "Display": [
+        "display_broad",
+        "display_branding",
+        "display_prospecting",
+        "display_rea",
+        "display_winback",
+        "display_crossselling",
+        "display_upselling",
+        "display_retargeting",
+        "local"
+      ],
+      "Social Advertising": [
+        "social_broad",
+        "social_branding",
+        "social_prospecting",
+        "social_rea",
+        "social_winback",
+        "social_crossselling",
+        "social_upselling",
+        "social_retargeting"
+      ],
+      "Affiliate": ["private-network", "network"],
+      "PSM": ["psm_feed"],
+      "Email": [
+        "transaction-email",
+        "newsletter",
+        "reco",
+        "promo",
+        "rea",
+        "winback",
+        "crossselling",
+        "upselling"
+      ],
+      "Cooperations": ["coop"],
+      "Social & Influencer": ["social_organic", "social_sponsored"],
+      "Offsite": ["brochure", "flyer", "catalogue", "app", "stationary_display", "owned_web"]
+    };
+
+    /*******************************************************
+     * CHANNEL -> CAMPAIGN_TYPE MAPPING
+     *******************************************************/
+    const campaignTypeMap = {
+      "Search (Brand)": [
+        "b-txt",
+        "b-pla",
+        "sc-ad",
+        "ssc",
+        "b-lia",
+        "pmax"
+      ],
+      "Search (Generic)": [
+        "g-txt",
+        "g-pla",
+        "g-dsa",
+        "sc-ad",
+        "ssc",
+        "g-lia",
+        "pmax"
+      ],
+      "Search (Shopping)": [
+        "g-pla",
+        "g-lia",
+        "pmax"
+      ],
+      "Display": [
+        "local",
+        "pros",
+        "pros-aff",
+        "pros-lal",
+        "pros-broad",
+        "pros-ca",
+        "ret",
+        "ret-uf",
+        "ret-mf",
+        "ret-lf",
+        "brnd-fl",
+        "rea",
+        "winback",
+        "cross",
+        "up",
+        "broad",
+        "ra-0",
+        "ra-1",
+        "ra-2",
+        "ra-3",
+        "ra-4",
+        "ra-5"
+      ],
+      "Social Advertising": [
+        "pros",
+        "pros-aff",
+        "pros-lal",
+        "pros-broad",
+        "pros-ca",
+        "ret",
+        "ret-uf",
+        "ret-mf",
+        "ret-lf",
+        "brnd-fl",
+        "rea",
+        "winback",
+        "cross",
+        "up",
+        "broad"
+      ],
+      "Affiliate": [
+        "gtsn",
+        "prvt-netwrk",
+        "netwrk"
+      ],
+      "PSM": [
+        "feed"
+      ],
+      "Email": [
+        "trsm",
+        "nwslt",
+        "reco",
+        "promo",
+        "rea",
+        "winback",
+        "crossselling",
+        "upselling"
+      ],
+      "Cooperations": [
+        "coop"
+      ],
+      "Social & Influencer": [
+        "soor",
+        "sosp"
+      ],
+      "Offsite": [
+        "n"
+      ]
+    };
+
+    /*******************************************************
+     * DOM ELEMENTS
+     *******************************************************/
+    const form = document.getElementById('utmForm');
+    const channelSelect = document.getElementById('channel');
+    const sourceInput = document.getElementById('utm_source');
+    const mediumSelect = document.getElementById('utm_medium');
+
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+
+    const campaignContentPrefixSelect = document.getElementById('campaign_content_prefix');
+    const campaignContentMainInput = document.getElementById('campaign_content_main');
+    const campaignContentExtraInput = document.getElementById('campaign_content_extra');
+
+    const goalSelect = document.getElementById('goal');
+    const campaignTypeSelect = document.getElementById('campaign_type');
+    const campaignSubtypeSelect = document.getElementById('campaign_subtype');
+    const budgetTypeSelect = document.getElementById('budget_type');
+    const railSelect = document.getElementById('rail');
+    const countrySelect = document.getElementById('country');
+
+    const utmContentInput = document.getElementById('utm_content');
+    const utmTermInput = document.getElementById('utm_term');
+
+    // New: Target URL
+    const targetUrlInput = document.getElementById('target_url');
+    const targetUrlError = document.getElementById('targetUrlError');
+
+    const resultBox = document.getElementById('result');
+    const copyBtn = document.getElementById('copyBtn');
+
+    const channelError = document.getElementById('channelError');
+    const sourceError = document.getElementById('sourceError');
+    const mediumError = document.getElementById('mediumError');
+    const startDateError = document.getElementById('startDateError');
+    const endDateError = document.getElementById('endDateError');
+    const contentMainError = document.getElementById('contentMainError');
+    const contentExtraError = document.getElementById('contentExtraError');
+    const goalError = document.getElementById('goalError');
+    const campaignTypeError = document.getElementById('campaignTypeError');
+    const campaignSubtypeError = document.getElementById('campaignSubtypeError');
+    const budgetTypeError = document.getElementById('budgetTypeError');
+    const railError = document.getElementById('railError');
+    const countryError = document.getElementById('countryError');
+    const contentError = document.getElementById('contentError');
+    const termError = document.getElementById('termError');
+
+    /*******************************************************
+     * DYNAMICALLY POPULATE UTM_MEDIUM & CAMPAIGN_TYPE
+     *******************************************************/
+    channelSelect.addEventListener('change', () => {
+      // Clear old options
+      mediumSelect.innerHTML = '<option value="">-- Select a Medium --</option>';
+      const selectedChannel = channelSelect.value;
+      if (selectedChannel && channelMediumMap[selectedChannel]) {
+        channelMediumMap[selectedChannel].forEach(medium => {
+          const opt = document.createElement('option');
+          opt.value = medium;
+          opt.textContent = medium;
+          mediumSelect.appendChild(opt);
+        });
+      }
+
+      // For Campaign Type
+      campaignTypeSelect.innerHTML = '<option value="">-- Select a Campaign Type --</option>';
+      if (selectedChannel && campaignTypeMap[selectedChannel]) {
+        campaignTypeMap[selectedChannel].forEach(typeVal => {
+          const opt = document.createElement('option');
+          opt.value = typeVal;
+          opt.textContent = typeVal;
+          campaignTypeSelect.appendChild(opt);
+        });
+      }
+    });
+
+    /*******************************************************
+     * TOOLTIP INITIALIZATION
+     *******************************************************/
+    document.addEventListener('DOMContentLoaded', () => {
+      const tooltipMap = [
+        { iconId: 'tooltip-channel', contentId: 'info-channel' },
+        { iconId: 'tooltip-utm_source', contentId: 'info-utm_source' },
+        { iconId: 'tooltip-utm_medium', contentId: 'info-utm_medium' },
+        { iconId: 'tooltip-start_date', contentId: 'info-start_date' },
+        { iconId: 'tooltip-end_date', contentId: 'info-end_date' },
+        { iconId: 'tooltip-campaign_content_prefix', contentId: 'info-campaign_content_prefix' },
+        { iconId: 'tooltip-campaign_content_main', contentId: 'info-campaign_content_main' },
+        { iconId: 'tooltip-campaign_content_extra', contentId: 'info-campaign_content_extra' },
+        { iconId: 'tooltip-goal', contentId: 'info-goal' },
+        { iconId: 'tooltip-campaign_type', contentId: 'info-campaign_type' },
+        { iconId: 'tooltip-campaign_subtype', contentId: 'info-campaign_subtype' },
+        { iconId: 'tooltip-budget_type', contentId: 'info-budget_type' },
+        { iconId: 'tooltip-rail', contentId: 'info-rail' },
+        { iconId: 'tooltip-country', contentId: 'info-country' },
+        { iconId: 'tooltip-utm_content', contentId: 'info-utm_content' },
+        { iconId: 'tooltip-utm_term', contentId: 'info-utm_term' },
+        { iconId: 'tooltip-target_url', contentId: 'info-target_url' } // new
+      ];
+
+      tooltipMap.forEach(item => {
+        const contentEl = document.getElementById(item.contentId);
+        const iconEl = document.getElementById(item.iconId);
+        if (contentEl && iconEl) {
+          iconEl.setAttribute('data-bs-title', contentEl.innerHTML);
+        }
+      });
+
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+
+    /*******************************************************
+     * VALIDATION HELPERS
+     *******************************************************/
+    function validateUtmSource(value, channel) {
+      const channelsAllowBraces = [
+        "Search (Brand)",
+        "Search (Generic)",
+        "Search (Shopping)",
+        "Display",
+        "Social Advertising",
+        "Affiliate",
+        "Social & Influencer"
+      ];
+      if (channelsAllowBraces.includes(channel)) {
+        return /^[a-z\-\{\}]+$/.test(value); // a-z, dash, {, }
+      } else {
+        return /^[a-z\-]+$/.test(value);     // a-z, dash
+      }
+    }
+
+    function validateDate(dateStr) {
+      if (!dateStr) return true; // optional
+      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+      return datePattern.test(dateStr);
+    }
+
+    // For sub-parts of utm_campaign (letters a-z, digits, dash)
+    function validateCampaignText(value) {
+      if (!value) return true; 
+      return /^[a-z0-9\-]+$/.test(value);
+    }
+
+    // For the mandatory or optional campaign content subfields => letters a-z, dash
+    function validateCampaignContent(value) {
+      return /^[a-z\-]*$/.test(value);
+    }
+
+    // utm_content, utm_term => letters a-z, digits 0-9, dash, optional
+    function validateOptionalSimple(value) {
+      if (!value) return true; 
+      return /^[a-z0-9\-]+$/.test(value);
+    }
+
+    // Must start with http(s)://www. and have a TLD
+    function validateTargetUrl(url) {
+      const pattern = /^(https?:\/\/www\.[a-zA-Z0-9\-]+\.[a-zA-Z]{2,})(\/.*)?$/;
+      return pattern.test(url);
+    }
+
+    /*******************************************************
+     * ON FORM SUBMIT -> VALIDATE & BUILD URL
+     *******************************************************/
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+
+      // Clear errors
+      channelError.textContent = "";
+      sourceError.textContent = "";
+      mediumError.textContent = "";
+      startDateError.textContent = "";
+      endDateError.textContent = "";
+      contentMainError.textContent = "";
+      contentExtraError.textContent = "";
+      goalError.textContent = "";
+      campaignTypeError.textContent = "";
+      campaignSubtypeError.textContent = "";
+      budgetTypeError.textContent = "";
+      railError.textContent = "";
+      countryError.textContent = "";
+      contentError.textContent = "";
+      termError.textContent = "";
+      targetUrlError.textContent = "";
+
+      // Gather inputs
+      const channelVal = channelSelect.value.trim();
+      const sourceVal = sourceInput.value.trim().toLowerCase();
+      const mediumVal = mediumSelect.value.trim();
+      const startDateVal = startDateInput.value.trim();
+      const endDateVal = endDateInput.value.trim();
+
+      const prefixVal = campaignContentPrefixSelect.value; 
+      const contentMainVal = campaignContentMainInput.value.trim().toLowerCase();
+      const contentExtraVal = campaignContentExtraInput.value.trim().toLowerCase();
+
+      const goalVal = goalSelect.value.trim();
+      const campaignTypeVal = campaignTypeSelect.value.trim();
+      const campaignSubtypeVal = campaignSubtypeSelect.value.trim();
+      const budgetTypeVal = budgetTypeSelect.value.trim();
+      const railVal = railSelect.value.trim();
+      const countryVal = countrySelect.value.trim();
+
+      const utmContentVal = utmContentInput.value.trim().toLowerCase();
+      const utmTermVal = utmTermInput.value.trim().toLowerCase();
+
+      // New: Target URL
+      const targetUrlVal = targetUrlInput.value.trim();
+
+      // 1) Validate required fields
+      if (!channelVal) {
+        channelError.textContent = "Channel is required.";
+        isValid = false;
+      }
+      if (!sourceVal) {
+        sourceError.textContent = "utm_source is required.";
+        isValid = false;
+      }
+      if (!mediumVal) {
+        mediumError.textContent = "utm_medium is required.";
+        isValid = false;
+      }
+      if (!contentMainVal) {
+        contentMainError.textContent = "Main field for Campaign Content is required.";
+        isValid = false;
+      }
+      if (!goalVal) {
+        goalError.textContent = "Goal is required.";
+        isValid = false;
+      }
+      if (!validateCampaignText(campaignTypeVal)) {
+        campaignTypeError.textContent = "Only letters a-z, digits 0-9, and dashes allowed.";
+        isValid = false;
+      }
+      if (!campaignSubtypeVal) {
+        campaignSubtypeError.textContent = "Campaign Subtype is required.";
+        isValid = false;
+      }
+      if (!budgetTypeVal) {
+        budgetTypeError.textContent = "Budget Type is required.";
+        isValid = false;
+      }
+      if (!railVal) {
+        railError.textContent = "rail is required.";
+        isValid = false;
+      }
+      if (!countryVal) {
+        countryError.textContent = "country is required.";
+        isValid = false;
+      }
+
+      // Validate the new target URL
+      if (!targetUrlVal) {
+        targetUrlError.textContent = "Target URL is required.";
+        isValid = false;
+      } else if (!validateTargetUrl(targetUrlVal)) {
+        targetUrlError.textContent = "Please enter a valid URL starting with http(s)://www. and a valid domain.";
+        isValid = false;
+      }
+
+      // 2) Additional pattern checks
+      if (sourceVal && channelVal) {
+        if (!validateUtmSource(sourceVal, channelVal)) {
+          sourceError.textContent = "Invalid characters for utm_source based on selected channel.";
+          isValid = false;
+        }
+      }
+      if (!validateDate(startDateVal)) {
+        startDateError.textContent = "Invalid date format (YYYY-MM-DD) or illegal characters.";
+        isValid = false;
+      }
+      if (!validateDate(endDateVal)) {
+        endDateError.textContent = "Invalid date format (YYYY-MM-DD) or illegal characters.";
+        isValid = false;
+      }
+      if (!validateCampaignContent(contentMainVal)) {
+        contentMainError.textContent = "Only letters a-z and dashes allowed.";
+        isValid = false;
+      }
+      if (contentExtraVal && !validateCampaignContent(contentExtraVal)) {
+        contentExtraError.textContent = "Only letters a-z and dashes allowed.";
+        isValid = false;
+      }
+      if (!validateCampaignText(campaignTypeVal)) {
+        campaignTypeError.textContent = "Only letters a-z, digits 0-9, and dashes allowed.";
+        isValid = false;
+      }
+      if (!validateOptionalSimple(utmContentVal)) {
+        contentError.textContent = "utm_content can only contain letters a-z, digits 0-9, and dashes.";
+        isValid = false;
+      }
+      if (!validateOptionalSimple(utmTermVal)) {
+        termError.textContent = "utm_term can only contain letters a-z, digits 0-9, and dashes.";
+        isValid = false;
+      }
+
+      // Stop if invalid
+      if (!isValid) return;
+
+      /*******************************************************
+       * BUILD THE utm_campaign VALUE
+       *******************************************************/
+      let campaignContentValue = prefixVal + contentMainVal;
+      if (contentExtraVal) {
+        campaignContentValue += "-" + contentExtraVal;
+      }
+
+      let utmCampaignVal = "";
+      if (startDateVal && endDateVal) {
+        utmCampaignVal = `${startDateVal}--${endDateVal}_${campaignContentValue}_${goalVal}_${campaignTypeVal}_${campaignSubtypeVal}_${budgetTypeVal}_${railVal}-${countryVal}`;
+      } else if (startDateVal && !endDateVal) {
+        utmCampaignVal = `${startDateVal}_${campaignContentValue}_${goalVal}_${campaignTypeVal}_${campaignSubtypeVal}_${budgetTypeVal}_${railVal}-${countryVal}`;
+      } else {
+        utmCampaignVal = `${campaignContentValue}_${goalVal}_${campaignTypeVal}_${campaignSubtypeVal}_${budgetTypeVal}_${railVal}-${countryVal}`;
+      }
+
+      // Build the UTM query string (non-encoded)
+      let urlParams = `?utm_source=${sourceVal}`
+                     + `&utm_medium=${mediumVal}`
+                     + `&utm_campaign=${utmCampaignVal}`;
+      if (utmContentVal) {
+        urlParams += `&utm_content=${utmContentVal}`;
+      }
+      if (utmTermVal) {
+        urlParams += `&utm_term=${utmTermVal}`;
+      }
+
+      // Combine with the Target URL
+      const finalOutput = targetUrlVal + urlParams;
+
+      // Display result
+      resultBox.style.display = "block";
+      resultBox.textContent = finalOutput;
+
+      // Show the copy button
+      copyBtn.style.display = "inline-block";
+
+      // Replace the copyBtn with a clone to remove old event listeners
+      copyBtn.replaceWith(copyBtn.cloneNode(true));
+      const freshCopyBtn = document.getElementById('copyBtn');
+      freshCopyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(finalOutput).then(() => {
+          alert('Copied to clipboard!');
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+        });
+      });
+    });
+
+    /*******************************************************
+     * Hover-text on i-icon when different channels are selected
+     *******************************************************/
+    // Example for utm_source, utm_medium, campaign_type
+    const utmSourceTooltipsByChannel = {
+      "Search (Brand)": "test",
+      "Search (Generic)": "Here’s how utm_source works for a Generic Search campaign...",
+    };
+
+    const utmMediumTooltipsByChannel = {
+      "Search (Brand)": `
+        <p>Choose from the following Options:</p>
+        <ul>
+          <li><strong>brand</strong><br />all keywords with rail in it, brand-mix, too, NO own brands!</li><br />
+        </ul>
+      `,
+      "Search (Generic)": `
+        <p>Choose from the following Options:</p>
+        <ul>
+          <li><strong>generic</strong><br />generic keywords, NO brand keywords, own brand keywords possible</li><br />
+        </ul>
+      `,
+      // ...
+    };
+
+    const campaignTypeTooltipsByChannel = {
+      "Search (Brand)": `
+        <p>Choose from the following Options:</p>
+        <ul>
+          <li><strong>b-txt</strong><br />Brand-Text-Ad</li><br />
+          <li><strong>b-pla</strong><br />Brand-Product Listing Ads</li><br />
+          <li><strong>sc-ad</strong><br />Showcase Ads</li><br />
+          <li><strong>ssc</strong><br />Smart Shopping Campaign</li><br />
+          <li><strong>b-lia</strong><br />Local Inventory Ad</li><br />
+          <li><strong>pmax</strong><br />Discovery Ad Google</li><br />
+        </ul>
+      `,
+      // ...
+    };
+
+    channelSelect.addEventListener('change', () => {
+      const selectedChannel = channelSelect.value;
+
+      // DYNAMIC utm_source
+      const newSourceText = utmSourceTooltipsByChannel[selectedChannel] || "Default fallback text for utm_source";
+      const utmSourceIcon = document.getElementById('tooltip-utm_source');
+      let tooltipInstance = bootstrap.Tooltip.getInstance(utmSourceIcon);
+      utmSourceIcon.setAttribute('data-bs-title', newSourceText);
+      if (tooltipInstance) {
+        tooltipInstance.setContent({ '.tooltip-inner': newSourceText });
+      } else {
+        new bootstrap.Tooltip(utmSourceIcon);
+      }
+
+      // DYNAMIC utm_medium
+      const newMediumText = utmMediumTooltipsByChannel[selectedChannel] || "Default fallback text for utm_medium";
+      const utmMediumIcon = document.getElementById('tooltip-utm_medium');
+      tooltipInstance = bootstrap.Tooltip.getInstance(utmMediumIcon);
+      utmMediumIcon.setAttribute('data-bs-title', newMediumText);
+      if (tooltipInstance) {
+        tooltipInstance.setContent({ '.tooltip-inner': newMediumText });
+      } else {
+        new bootstrap.Tooltip(utmMediumIcon);
+      }
+
+      // DYNAMIC Campaign Type
+      const newCampaignTypeText = campaignTypeTooltipsByChannel[selectedChannel] || "Default fallback text for Campaign Type";
+      const campaignTypeIcon = document.getElementById('tooltip-campaign_type');
+      tooltipInstance = bootstrap.Tooltip.getInstance(campaignTypeIcon);
+      campaignTypeIcon.setAttribute('data-bs-title', newCampaignTypeText);
+      if (tooltipInstance) {
+        tooltipInstance.setContent({ '.tooltip-inner': newCampaignTypeText });
+      } else {
+        new bootstrap.Tooltip(campaignTypeIcon);
+      }
+    });
+  </script>
+</body>
+</html>
+
+/* Put this in as baseline and then try again explicitly saying add another output box with another copy link that should do xy
+/* ToDo: Add another Output Field after the current one with the following text: "Campaign Name you use in your tool like Google Adwords:" </ br> " + utm_campaign_value
+/* That output field should also be copyable
