@@ -934,9 +934,9 @@
       return /^[a-z0-9\-]+$/.test(value);
     }
 
-    // For the mandatory or optional campaign content subfields => letters a-z, dash
+    // For the mandatory or optional campaign content subfields => letters a-z, digits 0-9, dash
     function validateCampaignContent(value) {
-      return /^[a-z\-]*$/.test(value);
+      return /^[a-z0-9\-]+$/.test(value);
     }
 
     // utm_content, utm_term => letters a-z, digits 0-9, dash, optional
@@ -1071,7 +1071,7 @@
         isValid = false;
       }
       if (contentExtraVal && !validateCampaignContent(contentExtraVal)) {
-        contentExtraError.textContent = "Only letters a-z and dashes allowed.";
+        contentExtraError.textContent = "Only letters a-z, digits 0-9, and dashes allowed.";
         isValid = false;
       }
       if (!validateCampaignText(campaignTypeVal)) {
