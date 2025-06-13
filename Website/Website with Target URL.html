@@ -936,7 +936,7 @@
 
     // For the mandatory or optional campaign content subfields => letters a-z, dash
     function validateCampaignContent(value) {
-      return /^[a-z\-]*$/.test(value);
+      return /^[a-z0-9\-]+$/.test(value);
     }
 
     // utm_content, utm_term => letters a-z, digits 0-9, dash, optional
